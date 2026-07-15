@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ugra"
+version = "0.1.0"
+description = "UGRA: Uncertainty-Guided Reading Agent for text recognition in degraded documents, with distribution-free selective-risk gates"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "Pillow>=9.0",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+models = ["torch", "transformers", "requests"]
+dev = ["pytest>=7.0", "pytest-cov"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "unit: fast, dependency-free tests",
+    "integration: tests that wire several components together",
+    "slow: statistical simulations (seconds, not minutes)",
+]

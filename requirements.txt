@@ -1,0 +1,16 @@
+# Core (calibration, metrics, degradation protocol, mock ecosystem)
+numpy>=1.24
+scipy>=1.10
+Pillow>=9.0
+PyYAML>=6.0
+
+# Optional — real model stack (Section 3.2/3.3 of the paper)
+# torch
+# transformers        # TrOCR specialist reader
+# requests            # served Qwen3-VL generalist / Qwen3 planner endpoints
+# kenlm               # character language model verifier (falls back to a
+#                     # built-in n-gram model when absent)
+
+# Development
+pytest>=7.0
+pytest-cov

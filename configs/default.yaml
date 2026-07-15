@@ -1,0 +1,46 @@
+# UGRA default configuration (Section 4.1 implementation details).
+# PROVISIONAL where marked; every value here is pinned in the paper's text.
+
+gate:
+  alpha: 0.05          # risk tolerance on mean CER of accepted output
+  delta: 0.10          # confidence parameter of the PAC statement
+  grid_step: 0.01      # Lambda = {0, 0.01, ..., 1}
+  bound: bentkus       # hoeffding | bentkus (Bentkus used throughout the paper)
+
+loop:
+  budget: 12.0         # B, in normalized cost units (one specialist read = 1)
+  floors:              # verifier floors (default 0.25, swept in Section 4.4)
+    lexicon: 0.25
+    charlm: 0.25
+    layout: 0.25
+
+costs:                 # Table 2 tiers (PROVISIONAL: replace with measured wall-clock)
+  specialist: 1.0
+  generalist: 3.0
+  classical_restorer: 0.05
+  learned_restorer: 1.0
+  verifier: 0.05
+
+models:                # real stack (Section 4.1); unused by the mock ecosystem
+  specialist:
+    kind: trocr
+    checkpoint: microsoft/trocr-large-handwritten
+  generalist:
+    kind: served_vlm
+    endpoint: http://localhost:8000/v1
+    model: Qwen/Qwen3-VL-30B-A3B-Instruct
+  planner:
+    endpoint: http://localhost:8001/v1
+    model: Qwen/Qwen3-235B-A22B
+    temperature: 0.3
+    top_p: 0.9
+    max_tokens: 512
+  student:
+    endpoint: http://localhost:8002/v1
+    model: ugra-student-qwen3-8b   # LoRA rank 16, trained on logged pairs
+
+experiment:
+  seeds: [0, 1, 2]     # three planner sampling seeds
+  bootstrap_resamples: 10000
+  validity_resamples: 100
+  calibration_fraction: 0.5
